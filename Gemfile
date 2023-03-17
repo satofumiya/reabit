@@ -36,6 +36,7 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'license_finder'
   gem 'pry-byebug'
+  gem 'faker'
   gem 'rspec-rails'
   gem 'bullet'
   gem 'rubocop', require: false
