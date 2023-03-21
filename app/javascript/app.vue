@@ -6,8 +6,9 @@
       <button @click="addBook">読みたい本を追加する</button>
     </div>
     <ul>
-      <li v-for="book in books" :key="book.id">
+      <li v-for="(book, index) in books" :key="book.id" class="book_list">
         {{ book.title }} : {{ book.page_count }}ページ
+        <button @click="deleteBook(book.id)">削除</button>
       </li>
     </ul>
   </div>
@@ -20,6 +21,7 @@ export default {
   data: function () {
     return {
       books: "books",
+      id: '',
       title: '',
       page_count: ''
     }
@@ -42,8 +44,13 @@ export default {
         .then(response => (
           this.setBookList()
         ));
+    },
+    deleteBook: function (id) {
+      axios.delete("/api/books/" + id)
+        .then(response => (
+          this.setBookList()
+        ));
     }
-
   }
 }
 </script>
