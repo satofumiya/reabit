@@ -6,7 +6,16 @@
       <button @click="addBook">読みたい本を追加する</button>
     </div>
     <ul>
-      <li v-for="book in filteredData" :key="book.id" class="book_list">
+      <h1>今読む本</h1>
+      <li v-for="book in reading_now" :key="book.id" class="book_list">
+        {{ book.title }} : {{ book.page_count }}ページ
+        <button @click="deleteBook(book.id)">削除</button>
+        <button @click="book.reading_now = !book.reading_now">後で読む</button>
+      </li>
+    </ul>
+    <ul>
+      <h1>後で読む本</h1>
+      <li v-for="book in reading_later" :key="book.id" class="book_list">
         {{ book.title }} : {{ book.page_count }}ページ
         <button @click="deleteBook(book.id)">削除</button>
         <button @click="book.reading_now = !book.reading_now">この本を読む</button>
@@ -55,10 +64,13 @@ export default {
     }
   },
   computed: {
-    filteredData() {
+    reading_now() {
       const trueData = this.books.filter(book => book.reading_now === true) // trueのデータを抽出
+      return trueData
+    },
+    reading_later() {
       const falseData = this.books.filter(book => book.reading_now === false) // falseのデータを抽出
-      return trueData.concat(falseData)
+      return falseData
     }
   }
 }
