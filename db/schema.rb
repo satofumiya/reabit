@@ -10,12 +10,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_03_17_135513) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_21_094019) do
   create_table "books", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.integer "page_count"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "reading_now", default: false
   end
 
   create_table "users", charset: "utf8", force: :cascade do |t|

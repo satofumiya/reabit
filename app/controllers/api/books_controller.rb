@@ -2,7 +2,7 @@ class Api::BooksController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @books = Book.order('created_at DESC')
+    @books = Book.all
   end
 
   def create
