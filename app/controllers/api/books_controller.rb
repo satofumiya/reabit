@@ -19,8 +19,13 @@ class Api::BooksController < ApplicationController
     @book.destroy
   end
 
+  def update
+    @book = Book.find_by(id: params[:id])
+    @book.update(book_params)
+  end
+
   private
     def book_params
-      params.permit(:title, :page_count)
+      params.require(:book).permit(:title, :page_count, :reading_now)
     end
 end

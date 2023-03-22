@@ -7,18 +7,18 @@
     </div>
     <ul>
       <h1>今読む本</h1>
-      <li v-for="book in reading_now" :key="book.id" class="book_list">
+      <li v-for="(book, index) in reading" :key="book.id" class="read_now_book_list">
         {{ book.title }} : {{ book.page_count }}ページ
         <button @click="deleteBook(book.id)">削除</button>
-        <button @click="book.reading_now = !book.reading_now">後で読む</button>
+        <button @click="whenToRead(book)">後で読む</button>
       </li>
     </ul>
     <ul>
       <h1>後で読む本</h1>
-      <li v-for="book in reading_later" :key="book.id" class="book_list">
+      <li v-for="(book, index) in reading_later" :key="book.id" class="read_later_book_list">
         {{ book.title }} : {{ book.page_count }}ページ
         <button @click="deleteBook(book.id)">削除</button>
-        <button @click="book.reading_now = !book.reading_now">この本を読む</button>
+        <button @click="whenToRead(book)">この本を読む</button>
       </li>
     </ul>
   </div>
@@ -61,10 +61,22 @@ export default {
         .then(response => (
           this.setBookList()
         ));
+    },
+    bookUpdate: function (book) {
+      axios.patch("/api/books/" + book.id, {
+        reading_now: book.reading_now
+      });
+    },
+    wantToRead: function (book) {
+      book.reading_now = !book.reading_now
+    },
+    whenToRead: function (book) {
+      this.wantToRead(book)
+      this.bookUpdate(book)
     }
   },
   computed: {
-    reading_now() {
+    reading() {
       const trueData = this.books.filter(book => book.reading_now === true) // trueのデータを抽出
       return trueData
     },
@@ -72,7 +84,7 @@ export default {
       const falseData = this.books.filter(book => book.reading_now === false) // falseのデータを抽出
       return falseData
     }
-  }
+  },
 }
 
 </script>
@@ -87,7 +99,14 @@ ul {
   list-style: none;
 }
 
-.book_list {
+.read_now_book_list {
+  padding-left: 20px;
+  line-height: 1.6em;
+  background: url(../assets/images/reading_icon.png) left 0px top 7px no-repeat;
+  background-size: 15px auto;
+}
+
+.read_later_book_list {
   padding-left: 20px;
   line-height: 1.6em;
   background: url(../assets/images/read_later_icon.png) left 0px top 7px no-repeat;
