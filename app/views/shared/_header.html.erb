@@ -10,8 +10,8 @@
         </div>
       <% end %>
       <div class="header d-flex container-fluid justify-content-between flex-wrap">
-        <div class="d-flex justify-content-start ">
-          <%= image_tag "reading_icon.png", class: "img", width:"50", height:"50"%>
+        <div class="d-flex">
+          <%= image_tag "reading_icon.png", class: "img", id:"logo" %>
         </div>
         <div class="d-flex justify-content-end">
           <nav class="global-nav navbar navbar-expand-md d-flex container-fluid align-items-center">
@@ -19,7 +19,7 @@
               <i class="fas fa-bars" onclick="clickBtn1()" id="toggle-btn"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
-              <ul class="d-flex">
+              <ul class="d-flex", style="list-style: none;">
                 <li class="nav-item mx-1">
                     <%= link_to "Home", root_path, class:'link' %>
                 </li>
@@ -43,14 +43,14 @@
               </ul>
             </div>
             <div class="col-12 d-md-none" id="nav_for_Hamburger">
-              <ul class="d-flex flex-wrap">
-                <li class="nav-item mx-1 mt-3 col-12">
+              <ul class="d-flex flex-wrap", style="list-style: none;">
+                <li class="nav-item mx-1 col-12">
                   <%= link_to "Home", root_path, class:'link' %>
                 </li>
-                <li class="nav-item mx-1 mt-3 col-12">
+                <li class="nav-item mx-1 col-12">
                   <%= link_to "ログインボタン",new_user_registration_path , class:'link' %>
                 </li>
-                <li class="nav-item mx-1 mt-3 col-12">
+                <li class="nav-item mx-1 col-12">
                   <%= link_to "試しに機能を利用してみる", "*", class:'link' %>
                 </li>
                 <% if user_signed_in? %>
