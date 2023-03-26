@@ -1,3 +1,15 @@
-<h1>Pages#index</h1>
-<p>Find me in app/views/pages/index.html.erb</p>
-<button type="button" class="btn btn-primary">Button!!</button>
+<h1>Reabit</h1>
+<p>Reabitは読書の習慣を身につけたい人をサポートするためのものです。</p>
+
+<% if !user_signed_in? %>
+  <p>まずはどんな機能があるか試してみましょう</p>
+  <%= link_to "試しに機能を利用してみる", "*", class:'link' %>
+<% end %>
+
+<div>
+ <p>人気投稿一覧</p>
+</div>
+
+<div>
+  <p>新規投稿一覧</p>
+</div>
