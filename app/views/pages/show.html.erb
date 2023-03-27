@@ -1,1 +1,18 @@
 <h1><%= @user.name %>さんのページ</h1>
+<% if current_user == @user %>
+  <%= link_to "ユーザー情報を編集する",edit_user_registration_path %>
+<% end %>
+
+<div>
+ <p>読んだ本一覧</p>
+</div>
+<div>
+  <p>直近の投稿</p>
+</div>
+<div>
+ <p>1ヶ月で読んだ冊数</p>
+</div>
+<div>
+  <p>フォロー</p>
+  <p>フォロワー</p>
+</div>

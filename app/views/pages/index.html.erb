@@ -3,7 +3,7 @@
 
 <% if !user_signed_in? %>
   <p>まずはどんな機能があるか試してみましょう</p>
-  <%= link_to "試しに機能を利用してみる", users_guest_sign_in_path, method: :post, class:'link' %>
+  <%= link_to "試しに機能を利用してみる", users_guest_sign_in_path, method: :post, class:'btn btn-outline-success ' %>
 <% end %>
 
 <div>
