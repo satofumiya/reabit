@@ -2,11 +2,11 @@ class Api::BooksController < ApplicationController
   skip_before_action :verify_authenticity_token
 
   def index
-    @books = Book.all
+    @books = current_user.books.all
   end
 
   def create
-    @book = Book.new(book_params)
+    @book = current_user.books.new(book_params)
     if @book.save
       render :show, status: :created
     else
@@ -26,6 +26,6 @@ class Api::BooksController < ApplicationController
 
   private
     def book_params
-      params.require(:book).permit(:title, :page_count, :reading_now)
+      params.require(:book).permit(:title, :page_count, :reading_now,:user_id)
     end
 end
