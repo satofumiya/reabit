@@ -32,8 +32,8 @@
                   <li class="nav-item mx-1">
                     <%= link_to "読みたい本一覧へ", booklist_index_path , class:'btn btn-outline-primary' %>
                   </li>
-                  <li class="nav-item mx-1">
-                    <%= link_to current_user.name + 'のページへ', page_path(current_user), class:'btn btn-outline-primary' %>
+                   <li class="nav-item mx-1">
+                    <%= link_to current_user.name + "さんのページへ", page_path(current_user), class:'btn btn-outline-primary' %>
                   </li>
                   <li class="nav-item mx-1">
                     <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class:'btn btn-outline-danger' %>
@@ -55,11 +55,9 @@
                   <li class="nav-item mx-1 col-12">
                     <%= link_to "読みたい本一覧へ", booklist_index_path , class:'link' %>
                   </li>
+
                   <li class="nav-item mx-1 col-12">
-                    <%= link_to current_user.name + 'のページへ', page_path(current_user), class:'link' %>
-                  </li>
-                  <li class="nav-item mx-1 col-12">
-                    <%= link_to "ログアウト", destroy_user_session_path, method: :delete, class:'link' %>
+                    <%= link_to "ログアウト", destroy_user_session_path, method: :delete, data: { confirm: '本当にログアウトしますか？' }, remote: true, class:'link' %>
                   </li>
                 <% end %>
               </ul>
