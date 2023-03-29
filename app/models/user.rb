@@ -7,8 +7,8 @@ class User < ApplicationRecord
   has_many :relationships, class_name: "Relationship", foreign_key: "follow_id", dependent: :destroy
   has_many :reverse_of_relationships, class_name: "Relationship", foreign_key: "followed_id", dependent: :destroy
 
-  has_many :followings, through: :relationships, source: :follow
-  has_many :followers, through: :reverse_of_relationships, source: :followed
+  has_many :followings, through: :relationships, source: :followed
+  has_many :followers, through: :reverse_of_relationships, source: :follow
 
   def follow(user_id)
     relationships.create(followed_id: user_id)
@@ -19,7 +19,7 @@ class User < ApplicationRecord
   end
 
   def following?(user)
-    followers.include?(user)
+    followings.include?(user)
   end
 
   def self.guest
