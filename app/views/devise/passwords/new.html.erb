@@ -1,0 +1,20 @@
+<%= stylesheet_link_tag 'users', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div class="container d-flex justify-content-center">
+  <div class="col-6 bg-white d-flex flex-column p-5">
+    <h2 class="mb-3 fs-3">パスワードを忘れてしまいましたか？</h2>
+    <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+      <div class="field mb-3">
+        <%= f.label :email ,class:"text-muted"%><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email",class:"border rounded col-10 border-dark p-1" %>
+      </div>
+      <div class="actions box-login col-md-10 col-xl-5">
+        <%= f.submit "パスワードリセットする",class:"d-flex justify-content-center align-items-center"%>
+      </div>
+    <% end %>
+    <div class=" col-md-10 col-lg-5 m-1">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

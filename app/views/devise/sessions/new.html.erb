@@ -1,0 +1,36 @@
+<%= stylesheet_link_tag 'users', media: 'all', 'data-turbolinks-track': 'reload' %>
+<div class="container d-flex justify-content-center">
+  <div class="col-lg-6 col-12 bg-white d-flex flex-column align-items-center">
+    <h1 class="fs-3">ログイン</h1>
+    <div class="d-flex flex-column col-8">
+       <%= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+        <div class="field">
+          <%= f.label 'メールアドレス',class:"text-muted" %><br />
+          <%= f.email_field :email, autofocus: true, autocomplete: "email",class:"border rounded col-12 border-dark p-1" %>
+        </div>
+        <div class="field">
+          <%= f.label 'パスワード' ,class:"text-muted" %><br />
+          <%= f.password_field :password, autocomplete: "current-password", class:"border rounded col-12 border-dark  p-1"%>
+        </div>
+        <% if devise_mapping.rememberable? %>
+          <div class="field mt-2 mb-2">
+            <%= f.check_box :remember_me %>
+            <%= f.label :remember_me %>
+          </div>
+        <% end %>
+        <div class="d-flex justify-content-center align-items-center">
+          <div class="box-login col-8">
+            <%= f.submit "ログイン",class:"d-flex justify-content-center mb-3" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <p class="mb-1">どんな機能があるか試したい人は簡単ログインへ</p>
+      <%= link_to '簡単ログイン', users_guest_sign_in_path, method: :post, class:"btn btn-outline-success col-8" %>
+    </div>
+    <div class="mt-1">
+      <%= render "devise/shared/links" %>
+    </div>
+  </div>
+</div>

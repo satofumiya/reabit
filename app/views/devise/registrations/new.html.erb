@@ -1,0 +1,41 @@
+<%= stylesheet_link_tag 'users', media: 'all', 'data-turbolinks-track': 'reload' %>
+
+<div class="container d-flex justify-content-center">
+  <div class="col-6 bg-white d-flex flex-column p-5">
+    <h2 class="fs-5 mb-3">新規アカウント作成</h2>
+
+    <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
+
+      <div class="field mb-2">
+        <%= f.label "名前" ,class:"text-muted"%><br />
+        <%= f.text_field :name, autofocus: true, autocomplete: "name" ,class:"border rounded col-12 border-dark p-1"%>
+      </div>
+
+      <div class="field mb-2">
+        <%= f.label "メールアドレス" ,class:"text-muted"%><br />
+        <%= f.email_field :email, autofocus: true, autocomplete: "email" ,class:"border rounded col-12 border-dark p-1"%>
+      </div>
+
+      <div class="field mb-2">
+        <%= f.label :password ,class:"text-muted"%>
+        <% if @minimum_password_length %>
+          <em class="text-muted">(<%= @minimum_password_length %> 文字以上）</em>
+        <% end %><br />
+        <%= f.password_field :password, autocomplete: "new-password", class:"border rounded col-12 border-dark p-1"%>
+      </div>
+
+      <div class="field mb-4">
+        <%= f.label :password_confirmation ,class:"text-muted"%><br />
+        <%= f.password_field :password_confirmation, autocomplete: "new-password", class:"border rounded col-12 border-dark p-1"%>
+      </div>
+
+      <div class="actions box-login">
+        <%= f.submit "アカウント作成" ,class:"d-flex justify-content-center align-items-center mb-2"%>
+      </div>
+    <% end %>
+    <p class="small">既にアカウントを持っている方は</p>
+    <%= render "devise/shared/links" %>
+
+  </div>
+</div>
