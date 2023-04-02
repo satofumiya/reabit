@@ -25,6 +25,7 @@
       <h1>最近読んだ本</h1>
       <li v-for="book in finished_reading" :key="book.id" class="">
         {{ book.title }} : {{ formatDate(book.reading_at) }}
+        <button @click="toggleColumnUpdate(book, 'finished')">読み直す！</button>
       </li>
     </ul>
   </div>
@@ -76,15 +77,18 @@ export default {
       };
       if (column === 'finished') {
         data['reading_at'] = book.reading_at;
-        console.log(book.reading_at)
       }
       axios.patch("/api/books/" + book.id, data);
     },
     toggleColumn: function (book, column) {
       book[column] = !book[column]
       if (column == 'finished') {
-        book.reading_at = new Date().toISOString()
-        console.log(book.reading_at)
+        if (!book.reading_at) {
+          book.reading_at = new Date().toISOString()
+        } else {
+          book.reading_at = null
+        }
+
       }
     },
     toggleColumnUpdate: function (book, column) {
