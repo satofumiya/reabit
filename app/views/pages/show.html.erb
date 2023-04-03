@@ -10,10 +10,22 @@
 <% end %>
 
 <div>
- <p>読んだ本一覧</p>
+  <p>読んだ本一覧</p>
+  <% @books.each do |book| %>
+  <div>
+    <p><%= book.title %></p>
+    <%= link_to "投稿する", new_post_path(book_id: book.id) %>
+  </div>
+  <% end %>
 </div>
 <div>
   <p>直近の投稿</p>
+  <% @posts.each do |post| %>
+  <div>
+    <p><%= post.book.title %></p>
+    <p><%= post.content %></p>
+  </div>
+  <% end %>
 </div>
 <div>
  <p>1ヶ月で読んだ冊数</p>

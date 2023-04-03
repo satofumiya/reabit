@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   root to: 'pages#index'
   resources :pages, only: :show
+  resources :posts, only: [:new, :show, :create, :destroy]
   namespace :api, format: 'json' do
     resources :books, only: [:index, :create, :destroy,:update]
   end
