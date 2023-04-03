@@ -2,23 +2,30 @@
   <div id="app">
     <div>
       <input v-model="title" placeholder="title">
-      <input v-model="page_count" placeholder="page_count">
       <button @click="addBook">読みたい本を追加する</button>
     </div>
     <ul>
       <h1>今読む本</h1>
-      <li v-for="(book, index) in reading" :key="book.id" class="read_now_book_list">
-        {{ book.title }} : {{ book.page_count }}ページ
+      <li v-for="book in reading" :key="book.id" class="read_now_book_list">
+        {{ book.title }}
         <button @click="deleteBook(book.id)">削除</button>
-        <button @click="whenToRead(book)">後で読む</button>
+        <button @click="toggleColumnUpdate(book, 'reading_now')">後で読む</button>
+        <button @click="toggleColumnUpdate(book, 'finished')">読み終わりました！</button>
       </li>
     </ul>
     <ul>
       <h1>後で読む本</h1>
-      <li v-for="(book, index) in reading_later" :key="book.id" class="read_later_book_list">
-        {{ book.title }} : {{ book.page_count }}ページ
+      <li v-for="book in read_later" :key="book.id" class="read_later_book_list">
+        {{ book.title }}
         <button @click="deleteBook(book.id)">削除</button>
-        <button @click="whenToRead(book)">この本を読む</button>
+        <button @click="toggleColumnUpdate(book, 'reading_now')">この本を読む</button>
+      </li>
+    </ul>
+    <ul>
+      <h1>最近読んだ本</h1>
+      <li v-for="book in finished_reading" :key="book.id" class="">
+        {{ book.title }} : {{ formatDate(book.reading_at) }}
+        <button @click="toggleColumnUpdate(book, 'finished')">読み直す！</button>
       </li>
     </ul>
   </div>
@@ -34,7 +41,9 @@ export default {
       id: '',
       title: '',
       page_count: '',
-      reading_now: ''
+      reading_now: '',
+      finished: '',
+      reading_at: ''
     }
   },
   mounted() {
@@ -50,10 +59,10 @@ export default {
     addBook: function () {
       axios.post('/api/books', {
         title: this.title,
-        page_count: this.page_count
       })
         .then(response => (
-          this.setBookList()
+          this.setBookList(),
+          this.title = ""
         ));
     },
     deleteBook: function (id) {
@@ -62,29 +71,53 @@ export default {
           this.setBookList()
         ));
     },
-    bookUpdate: function (book) {
-      axios.patch("/api/books/" + book.id, {
-        reading_now: book.reading_now
-      });
+    bookUpdate: function (book, column) {
+      const data = {
+        [column]: book[column],
+      };
+      if (column === 'finished') {
+        data['reading_at'] = book.reading_at;
+      }
+      axios.patch("/api/books/" + book.id, data);
     },
-    wantToRead: function (book) {
-      book.reading_now = !book.reading_now
+    toggleColumn: function (book, column) {
+      book[column] = !book[column]
+      if (column == 'finished') {
+        if (!book.reading_at) {
+          book.reading_at = new Date().toISOString()
+        } else {
+          book.reading_at = null
+        }
+
+      }
     },
-    whenToRead: function (book) {
-      this.wantToRead(book)
-      this.bookUpdate(book)
+    toggleColumnUpdate: function (book, column) {
+      this.toggleColumn(book, column)
+      this.bookUpdate(book, column)
+    },
+    formatDate: function (date) {
+      if (!date) return "";
+      date = new Date(date);
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      return `${year}/${month}/${day}`;
     }
   },
   computed: {
     reading() {
-      const trueData = this.books.filter(book => book.reading_now === true) // trueのデータを抽出
-      return trueData
+      const readingData = this.books.filter(book => book.reading_now === true && book.finished === false)
+      return readingData
     },
-    reading_later() {
-      const falseData = this.books.filter(book => book.reading_now === false) // falseのデータを抽出
-      return falseData
+    read_later() {
+      const read_Later_Data = this.books.filter(book => book.reading_now === false && book.finished === false)
+      return read_Later_Data
+    },
+    finished_reading() {
+      const finished_Reading_Data = this.books.filter(book => book.finished === true)
+      return finished_Reading_Data
     }
-  },
+  }
 }
 
 </script>

@@ -31,11 +31,11 @@
         <%= f.password_field :current_password, autocomplete: "current-password" ,class:"form-control"%>
       </div>
       <div class="actions box-login mt-4">
-        <%= f.submit "更新します" ,class:"d-flex justify-content-center"%>
+        <%= f.submit "更新します" ,class:"d-flex btn btn-primary justify-content-center"%>
       </div>
     <% end %>
     <%= link_to "戻る", :back ,class:"btn-outline-primary mt-3 d-flex justify-content-center rounded"%>
     <h3 class="mt-3">アカウント削除をしますか？</h3>
-    <%= button_to "削除しますか？", registration_path(resource_name), data: { confirm: "本当によろしいですか?" }, method: :delete ,class:"btn-outline-danger rounded  d-flex justify-content-center"%>
+    <%= button_to "削除しますか？", registration_path(resource_name), data: { confirm: "本当によろしいですか?" }, method: :delete ,class:"btn btn-outline-danger rounded  d-flex justify-content-center"%>
   </div>
 </div>
