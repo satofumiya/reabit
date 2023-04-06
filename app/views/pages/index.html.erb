@@ -12,4 +12,15 @@
 
 <div>
   <p>新規投稿一覧</p>
+  <% @posts.each do |post| %>
+    <div>
+      <p><%= post.book.title %></p>
+      <p><%= post.content %></p>
+    </div>
+    <% if user_signed_in? %>
+      <% unless current_user.likes.exists?(post: post) %>
+        <%= button_to 'いいね', likes_path(post_id: post.id), method: :post %>
+      <% end %>
+    <% end %>
+  <% end %>
 </div>

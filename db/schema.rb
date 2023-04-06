@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_04_03_132204) do
+ActiveRecord::Schema[7.0].define(version: 2023_04_06_134210) do
   create_table "books", charset: "utf8", force: :cascade do |t|
     t.string "title"
     t.integer "page_count"
@@ -21,6 +21,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_04_03_132204) do
     t.boolean "finished", default: false
     t.datetime "reading_at"
     t.index ["user_id"], name: "index_books_on_user_id"
+  end
+
+  create_table "likes", charset: "utf8", force: :cascade do |t|
+    t.integer "user_id"
+    t.integer "post_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "posts", charset: "utf8", force: :cascade do |t|
