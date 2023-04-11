@@ -1,26 +1,26 @@
-<h1>Reabit</h1>
-<p>Reabitは読書の習慣を身につけたい人をサポートするためのものです。</p>
-
-<% if !user_signed_in? %>
-  <p>まずはどんな機能があるか試してみましょう</p>
-  <%= link_to "試しに機能を利用してみる", users_guest_sign_in_path, method: :post, class:'btn btn-outline-success ' %>
-<% end %>
-
-<div>
- <p>人気投稿一覧</p>
-</div>
-
-<div>
-  <p>新規投稿一覧</p>
-  <% @posts.each do |post| %>
-    <div>
-      <p><%= post.book.title %></p>
-      <p><%= post.content %></p>
+<div class="d-flex flex-column col-12 justify-content-center">
+  <div class="col-8 d-flex flex-column mx-auto">
+    <div class="content">
+      <div class="bg-white d-flex flex-column">
+        <h4>Reabitは読書習慣をサポートするアプリです。</h4>
+        <% if !user_signed_in? %>
+          <h5>どんな機能があるか試してみましょう</h5>
+            <%= link_to "簡単ログイン", users_guest_sign_in_path, method: :post, class:'btn btn-outline-success col-ms-4' %>
+        <% else %>
+          <p>まずは投稿から読んで見たい本を探してみましょう</p>
+          <p>1、本を見つけたらBookListで自分が気になった本を登録しましょう。</p>
+          <p>2、BookListでは「今読んでいる本」「読み終わった本」「後で読む本」を確認することができます。</p>
+          <p>3、本を読み終わったらどんな人におすすめか本について学んだこと等を紹介してみましょう</p>
+        <% end %>
+      </div>
     </div>
-    <% if user_signed_in? %>
-      <% unless current_user.likes.exists?(post: post) %>
-        <%= button_to 'いいね', likes_path(post_id: post.id), method: :post %>
-      <% end %>
-    <% end %>
-  <% end %>
+    <div class="d-flex flex-wrap justify-content-center mt-5">
+      <div class="col-12 col-md-6">
+        <%= render partial: 'shared/posts', locals: { postsTitle: "人気投稿",posts: @posts } %>
+      </div>
+      <div class="col-12 col-md-6">
+        <%= render partial: 'shared/posts', locals: { postsTitle: "新規投稿",posts: @posts } %>
+      </div>
+    </div>
+  </div>
 </div>

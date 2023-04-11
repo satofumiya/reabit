@@ -1,3 +1,19 @@
 // Place all the styles related to the Pages controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+.content {
+  background-image: image_url('mihiraki-hon.png');
+  background-size: 100% 102%;
+  padding: 10%;
+}
+
+@media (max-width: 700px) {
+  .content {
+    p {
+      font-size: smaller;
+    }
+
+    padding: 20%;
+    background-size: 100% 102%;
+  }
+}
