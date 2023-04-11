@@ -1,9 +1,16 @@
-<%= form_with model: @post, url: posts_path do |form| %>
-  <p><%= @book.title %></p>
-  <%= form.hidden_field :book_id, value: @book.id %>
-
-  <%= form.label :content %>
-  <%= form.text_area :content %>
-
-  <%= form.submit "投稿する" %>
-<% end %>
+<div class="container d-flex justify-content-center">
+  <div class="col-12 d-flex flex-column">
+    <%= form_with model: @post, class:"mt-5 col-8 d-flex flex-column mx-auto", url: posts_path do |form| %>
+      <h5 class="mb-3">読み終わった本についてどういう人におすすめか投稿してみましょう</h5>
+      <p>本のタイトル：<%= @book.title %></p>
+      <%= form.hidden_field :book_id, value: @book.id %>
+      <div class="d-flex flex-column">
+        <%= form.label '投稿内容' %>
+        <%= form.text_area :content ,class:"form-control form-control-lg"%>
+        <div class="d-flex justify-content-end mt-3">
+          <%= form.submit "投稿する" ,class:"btn btn-outline-primary"%>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
