@@ -2,11 +2,14 @@
   <div class="col-8 d-flex flex-column mx-auto">
     <div class="content">
       <div class="bg-white d-flex flex-column">
-        <h4>Reabitは読書習慣をサポートするアプリです。</h4>
         <% if !user_signed_in? %>
-          <h5>どんな機能があるか試してみましょう</h5>
-            <%= link_to "簡単ログイン", users_guest_sign_in_path, method: :post, class:'btn btn-outline-success col-ms-4' %>
+          <div class="d-flex flex-column justify-content-center align-items-center">
+            <h4>Reabitは読書習慣をサポートするアプリです。</h4>
+            <h5>どんな機能があるか試してみましょう</h5>
+            <%= link_to "簡単ログイン", users_guest_sign_in_path, method: :post, class:'btn btn-outline-success col-4' %>
+          </div>
         <% else %>
+          <h4>Reabitは読書習慣をサポートするアプリです。</h4>
           <p>まずは投稿から読んで見たい本を探してみましょう</p>
           <p>1、本を見つけたらBookListで自分が気になった本を登録しましょう。</p>
           <p>2、BookListでは「今読んでいる本」「読み終わった本」「後で読む本」を確認することができます。</p>
