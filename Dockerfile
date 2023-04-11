@@ -1,6 +1,6 @@
 FROM ruby:3.2.1
 
-RUN apt-get update -qq && apt-get install -y build-essential nodejs
+RUN apt-get update -qq && apt-get install -y build-essential nodejs graphviz
 RUN mkdir /app
 WORKDIR /app
 COPY Gemfile /app/Gemfile
