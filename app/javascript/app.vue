@@ -2,7 +2,7 @@
   <div id="app">
     <div>
       <input v-model="title" placeholder="title">
-      <button @click="addBook">読みたい本を追加する</button>
+      <button @click="addBook" class="btn btn-outline-primary">読みたい本を追加する</button>
     </div>
     <ul>
       <h1>今読む本</h1>

@@ -3,8 +3,9 @@
     <h2 class="card-title"><%= postsTitle %></h2>
     <% posts.each do |post| %>
       <div class="card mb-3">
-        <div class="card-header bg-white">
+        <div class="card-header bg-white d-flex">
           <p class="card-title"><%= post.book.title %></p>
+          <%= link_to post.user.name, page_path(post.user.id) %>
         </div>
         <div class="card-body border-top">
           <div class="ms-2">

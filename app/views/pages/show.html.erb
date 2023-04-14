@@ -1,6 +1,6 @@
 <div class="d-flex flex-column ms-5">
   <div class="d-flex col-12">
-    <h1 class="col-8"><%= @user.name %>さんのページ</h1>
+    <h1 class="col-8"><%= @user.name %></h1>
     <div class="d-flex align-items-center col-4">
       <% if current_user == @user %>
         <%= link_to "ユーザー情報を編集する",edit_user_registration_path %>
@@ -27,9 +27,9 @@
         <h2 class="card-title">読んだ本一覧</h2>
         <% @books.each do |book| %>
           <div class="card mt-2">
-            <div class="card-body d-flex flex-column justify-content-around justify-content-center">
-              <div class="d-flex">
-                <p class="">本のタイトル： <%= book.title %></p>
+            <div class="card-body d-flex flex-column justify-content-around">
+              <div class="d-flex align-items-center">
+                <p class="fs-4"><%= book.title %></p>
                 <% if book.reading_at %>
                   <p class="ms-2">読み終わった日: <%= book.reading_at.strftime('%Y-%m-%d')%></p>
                 <% end %>
