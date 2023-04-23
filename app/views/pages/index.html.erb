@@ -19,11 +19,12 @@
     </div>
     <div class="d-flex flex-wrap justify-content-center mt-5">
       <div class="col-12 col-md-6">
-        <%= render partial: 'shared/posts', locals: { postsTitle: "人気投稿",posts: @posts } %>
+        <%= render partial: 'shared/posts', locals: { postsTitle: "人気投稿",posts: @post_like_ranks, param_name: "post_like_ranks" } %>
       </div>
       <div class="col-12 col-md-6">
-        <%= render partial: 'shared/posts', locals: { postsTitle: "新規投稿",posts: @posts } %>
+        <%= render partial: 'shared/posts', locals: { postsTitle: "新規投稿",posts: @posts, param_name: "posts" } %>
       </div>
+      <%= paginate @posts %>
     </div>
   </div>
 </div>

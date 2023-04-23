@@ -8,11 +8,11 @@
       </div>
     </div>
     <div class="d-flex flex-wrap mt-3">
-      <div class="d-flex flex-column col-md-8 col-12">
+      <div class="d-flex flex-column col-md-7 col-12">
         <ul class="">
           <h1>今読む本</h1>
           <li v-for="book in reading" :key="book.id" class="read_now_book_list d-flex justify-content-between flex-wrap">
-            <p class="">{{ book.title }}</p>
+            <p class="">{{ book.title.length > 10 ? book.title.slice(0, 10) + '...' : book.title }}</p>
             <div class="me-4 align-items-center">
               <button @click="toggleColumnUpdate(book, 'reading_now')" class="btn btn-outline-primary">後で読む</button>
               <button @click="toggleColumnUpdate(book, 'finished')" class="btn btn-outline-success">読み終わりました！</button>
@@ -23,7 +23,7 @@
           <h1>後で読む本</h1>
           <li v-for="book in read_later" :key="book.id"
             class="read_later_book_list  d-flex justify-content-between flex-wrap">
-            <p class="">{{ book.title }}</p>
+            <p class="">{{ book.title.length > 10 ? book.title.slice(0, 10) + '...' : book.title }}</p>
             <div class="me-4 align-items-center">
               <button @click="deleteBook(book.id)" class="btn btn-outline-danger">削除</button>
               <button @click="toggleColumnUpdate(book, 'reading_now')" class="btn btn-outline-primary">この本を読む</button>
@@ -31,11 +31,12 @@
           </li>
         </ul>
       </div>
-      <div class="col-8 col-md-4 mt-3">
+      <div class="col-12 col-md-5 mt-3">
         <ul class="">
           <h1>最近読んだ本</h1>
-          <li v-for="book in finished_reading" :key="book.id" class=" d-flex justify-content-between flex-wrap">
-            <p>{{ book.title }} : {{ formatDate(book.reading_at) }}</p>
+          <li v-for="book in finished_reading" :key="book.id" class="d-flex justify-content-between flex-wrap">
+            <p>{{ book.title.length > 6 ? book.title.slice(0, 6) + '...' : book.title }} : {{ formatDate(book.reading_at)
+            }}</p>
             <div class="me-4 align-items-center">
               <button @click="toggleColumnUpdate(book, 'finished')" class="btn btn-outline-success">読み直す！</button>
             </div>
@@ -131,7 +132,7 @@ export default {
     },
     finished_reading() {
       const finished_Reading_Data = this.books.filter(book => book.finished === true)
-      return finished_Reading_Data
+      return finished_Reading_Data.reverse()
     }
   }
 }
