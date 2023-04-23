@@ -1,35 +1,52 @@
 <template>
-  <div id="app">
-    <div>
-      <input v-model="title" placeholder="title">
-      <button @click="addBook">読みたい本を追加する</button>
+  <div id="app" class="d-flex d-flex flex-column ms-sm-5">
+    <div class="d-flex flex-column justify-content-center mt-3 ms-sm-5 col-md-8 col-12">
+      <h1>自分の読書状況を整理しましょう</h1>
+      <div>
+        <input v-model="title" placeholder="title" class="col-6 border rounded me-1">
+        <button @click="addBook" class="btn btn-outline-primary">読みたい本を追加する</button>
+      </div>
     </div>
-    <ul>
-      <h1>今読む本</h1>
-      <li v-for="book in reading" :key="book.id" class="read_now_book_list">
-        {{ book.title }}
-        <button @click="deleteBook(book.id)">削除</button>
-        <button @click="toggleColumnUpdate(book, 'reading_now')">後で読む</button>
-        <button @click="toggleColumnUpdate(book, 'finished')">読み終わりました！</button>
-      </li>
-    </ul>
-    <ul>
-      <h1>後で読む本</h1>
-      <li v-for="book in read_later" :key="book.id" class="read_later_book_list">
-        {{ book.title }}
-        <button @click="deleteBook(book.id)">削除</button>
-        <button @click="toggleColumnUpdate(book, 'reading_now')">この本を読む</button>
-      </li>
-    </ul>
-    <ul>
-      <h1>最近読んだ本</h1>
-      <li v-for="book in finished_reading" :key="book.id" class="">
-        {{ book.title }} : {{ formatDate(book.reading_at) }}
-        <button @click="toggleColumnUpdate(book, 'finished')">読み直す！</button>
-      </li>
-    </ul>
+    <div class="d-flex flex-wrap mt-3">
+      <div class="d-flex flex-column col-md-7 col-12">
+        <ul class="">
+          <h1>今読む本</h1>
+          <li v-for="book in reading" :key="book.id" class="read_now_book_list d-flex justify-content-between flex-wrap">
+            <p class="">{{ book.title.length > 10 ? book.title.slice(0, 10) + '...' : book.title }}</p>
+            <div class="me-4 align-items-center">
+              <button @click="toggleColumnUpdate(book, 'reading_now')" class="btn btn-outline-primary">後で読む</button>
+              <button @click="toggleColumnUpdate(book, 'finished')" class="btn btn-outline-success">読み終わりました！</button>
+            </div>
+          </li>
+        </ul>
+        <ul class="">
+          <h1>後で読む本</h1>
+          <li v-for="book in read_later" :key="book.id"
+            class="read_later_book_list  d-flex justify-content-between flex-wrap">
+            <p class="">{{ book.title.length > 10 ? book.title.slice(0, 10) + '...' : book.title }}</p>
+            <div class="me-4 align-items-center">
+              <button @click="deleteBook(book.id)" class="btn btn-outline-danger">削除</button>
+              <button @click="toggleColumnUpdate(book, 'reading_now')" class="btn btn-outline-primary">この本を読む</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-5 mt-3">
+        <ul class="">
+          <h1>最近読んだ本</h1>
+          <li v-for="book in finished_reading" :key="book.id" class="d-flex justify-content-between flex-wrap">
+            <p>{{ book.title.length > 6 ? book.title.slice(0, 6) + '...' : book.title }} : {{ formatDate(book.reading_at)
+            }}</p>
+            <div class="me-4 align-items-center">
+              <button @click="toggleColumnUpdate(book, 'finished')" class="btn btn-outline-success">読み直す！</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -115,7 +132,7 @@ export default {
     },
     finished_reading() {
       const finished_Reading_Data = this.books.filter(book => book.finished === true)
-      return finished_Reading_Data
+      return finished_Reading_Data.reverse()
     }
   }
 }
@@ -124,7 +141,7 @@ export default {
 
 <style scoped>
 p {
-  font-size: 2em;
+  font-size: 1.5em;
   text-align: center;
 }
 
@@ -133,16 +150,18 @@ ul {
 }
 
 .read_now_book_list {
-  padding-left: 20px;
+  padding: 0px 30px;
   line-height: 1.6em;
   background: url(../assets/images/reading_icon.png) left 0px top 7px no-repeat;
   background-size: 15px auto;
+  margin: 10px;
 }
 
 .read_later_book_list {
-  padding-left: 20px;
+  padding: 0px 30px;
   line-height: 1.6em;
   background: url(../assets/images/read_later_icon.png) left 0px top 7px no-repeat;
   background-size: 15px auto;
+  margin: 10px;
 }
 </style>
