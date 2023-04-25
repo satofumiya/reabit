@@ -1,6 +1,14 @@
 class RelationshipsController < ApplicationController
   def create
-    current_user.follow(params[:user_id])
+    user = User.find(params[:user_id])
+    if current_user.following?(user)
+      flash[:error] = "もうこのユーザーはフォローされています."
+    elsif user == current_user
+      flash[:error] = "自分をフォローすることはできません."
+    else
+      current_user.follow(user)
+      flash[:success] = "#{user.name}をフォローしました！."
+    end
     redirect_to request.referer
   end
 
