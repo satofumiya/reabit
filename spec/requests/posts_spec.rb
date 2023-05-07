@@ -2,22 +2,14 @@ require 'rails_helper'
 
 RSpec.describe "Posts", type: :request do
   describe "GET /new" do
-    it "returns http success" do
-      get "/posts/new"
-      expect(response).to have_http_status(:success)
+    before do
+      @user = FactoryBot.create(:user)
+      @book = FactoryBot.create(:book, user: @user)
+      sign_in @user
     end
-  end
 
-  describe "GET /create" do
     it "returns http success" do
-      get "/posts/create"
-      expect(response).to have_http_status(:success)
-    end
-  end
-
-  describe "GET /destroy" do
-    it "returns http success" do
-      get "/posts/destroy"
+      get "/posts/new?book_id=#{@book.id}"
       expect(response).to have_http_status(:success)
     end
   end
