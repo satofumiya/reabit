@@ -7,6 +7,6 @@ class Relationship < ApplicationRecord
   private
 
   def cannot_follow_myself
-    errors.add(:followed, "自分をフォローすることは出来ません！") if follower_id == followed_id
+    errors.add(:followed, "自分をフォローすることは出来ません！") if follow_id == followed_id
   end
 end
