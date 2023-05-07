@@ -12,7 +12,7 @@
             <p class="card-text text-wrap"><%= post.content %></p>
           </div>
           <div class="d-flex justify-content-end">
-            <% if user_signed_in? %>
+            <% if user_signed_in? && current_user != post.user.id%>
               <% if current_user.likes.exists?(post: post) %>
                 <p class="pt-2">いいね済みです。</p>
               <% else %>
