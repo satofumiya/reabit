@@ -1,3 +1,163 @@
-<div id="js-hello-vue">
-  <%= javascript_pack_tag 'hello_vue.js' %>
-</div>
+<div id="app">
+     <div class="d-flex flex-column justify-content-center mt-3 ms-sm-5 col-md-8 col-12">
+      <h1>自分の読書状況を整理しましょう</h1>
+      <div>
+        <input v-model="title" placeholder="title" class="col-6 border rounded me-1" name="booktitle">
+        <button @click="addBook" class="btn btn-outline-primary">読みたい本を追加する</button>
+      </div>
+    </div>
+    <div class="d-flex flex-wrap mt-3">
+      <div class="d-flex flex-column col-md-7 col-12">
+        <ul class="">
+          <h1>今読む本</h1>
+          <li v-for="book in reading" :key="book.id" class="read_now_book_list d-flex justify-content-between flex-wrap">
+            <p class="">{{ book.title.length > 10 ? book.title.slice(0, 10) + '...' : book.title }}</p>
+            <div class="me-4 align-items-center">
+              <button @click="toggleColumnUpdate(book, 'reading_now')" class="btn btn-outline-primary">後で読む</button>
+              <button @click="toggleColumnUpdate(book, 'finished')" class="btn btn-outline-success">読み終わりました！</button>
+            </div>
+          </li>
+        </ul>
+        <ul class="">
+          <h1>後で読む本</h1>
+          <li v-for="book in read_later" :key="book.id"
+            class="read_later_book_list  d-flex justify-content-between flex-wrap">
+            <p class="">{{ book.title.length > 10 ? book.title.slice(0, 10) + '...' : book.title }}</p>
+            <div class="me-4 align-items-center">
+              <button @click="deleteBook(book.id)" class="btn btn-outline-danger">削除</button>
+              <button @click="toggleColumnUpdate(book, 'reading_now')" class="btn btn-outline-primary">この本を読む</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div class="col-12 col-md-5 mt-3">
+        <ul class="">
+          <h1>最近読んだ本</h1>
+          <li v-for="book in finished_reading" :key="book.id" class="d-flex justify-content-between flex-wrap">
+            <p>{{ book.title.length > 6 ? book.title.slice(0, 6) + '...' : book.title }} : {{ formatDate(book.reading_at)
+            }}</p>
+            <div class="me-4 align-items-center">
+              <button @click="toggleColumnUpdate(book, 'finished')" class="btn btn-outline-success">読み直す！</button>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+   </div>
+   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+   <script src="https://unpkg.com/axios@1.1.2/dist/axios.min.js"></script>
+   <script>
+     new Vue({
+       el: "#app",
+       data: function () {
+    return {
+      books: [],
+      id: '',
+      title: '',
+      page_count: '',
+      reading_now: '',
+      finished: '',
+      reading_at: ''
+    }
+  },
+  mounted() {
+    this.setBookList();
+  },
+  methods: {
+    setBookList: function () {
+      axios.get('/api/books')
+        .then(response => (
+          this.books = response.data
+        ))
+    },
+    addBook: function () {
+      axios.post('/api/books', {
+        title: this.title,
+      })
+        .then(response => (
+          this.setBookList(),
+          this.title = ""
+        ));
+    },
+    deleteBook: function (id) {
+      axios.delete("/api/books/" + id)
+        .then(response => (
+          this.setBookList()
+        ));
+    },
+    bookUpdate: function (book, column) {
+      const data = {
+        [column]: book[column],
+      };
+      if (column === 'finished') {
+        data['reading_at'] = book.reading_at;
+      }
+      axios.patch("/api/books/" + book.id, data);
+    },
+    toggleColumn: function (book, column) {
+      book[column] = !book[column]
+      if (column == 'finished') {
+        if (!book.reading_at) {
+          book.reading_at = new Date().toISOString()
+        } else {
+          book.reading_at = null
+        }
+
+      }
+    },
+    toggleColumnUpdate: function (book, column) {
+      this.toggleColumn(book, column)
+      this.bookUpdate(book, column)
+    },
+    formatDate: function (date) {
+      if (!date) return "";
+      date = new Date(date);
+      const year = date.getFullYear();
+      const month = ('0' + (date.getMonth() + 1)).slice(-2);
+      const day = ('0' + date.getDate()).slice(-2);
+      return `${year}/${month}/${day}`;
+    }
+  },
+  computed: {
+    reading() {
+      const readingData = this.books.filter(book => book.reading_now === true && book.finished === false)
+      return readingData
+    },
+    read_later() {
+      const read_Later_Data = this.books.filter(book => book.reading_now === false && book.finished === false)
+      return read_Later_Data
+    },
+    finished_reading() {
+      const finished_Reading_Data = this.books.filter(book => book.finished === true)
+      return finished_Reading_Data.reverse()
+    }
+  }
+     })
+   </script>
+
+  <style scoped>
+p {
+  font-size: 1.5em;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+}
+
+.read_now_book_list {
+  padding: 0px 30px;
+  line-height: 1.6em;
+  background: url(../assets/images/reading_icon.png) left 0px top 7px no-repeat;
+  background-size: 15px auto;
+  margin: 10px;
+}
+
+.read_later_book_list {
+  padding: 0px 30px;
+  line-height: 1.6em;
+  background: url(.../assets/images/read_later_icon.png) left 0px top 7px no-repeat;
+  background-size: 15px auto;
+  margin: 10px;
+}
+</style>

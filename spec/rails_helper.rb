@@ -5,6 +5,8 @@ require_relative '../config/environment'
 # Prevent database truncation if the environment is production
 abort("The Rails environment is running in production mode!") if Rails.env.production?
 require 'rspec/rails'
+require 'capybara/rspec'
+require 'capybara/poltergeist'
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -22,20 +24,6 @@ require 'rspec/rails'
 #
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 
-Capybara.register_driver :remote_chrome do |app|
-  url = "http://chrome:4444/wd/hub"
-  caps = ::Selenium::WebDriver::Remote::Capabilities.chrome(
-    "goog:chromeOptions" => {
-    "args" => [
-          "no-sandbox",
-          "headless",
-          "disable-gpu",
-          "window-size=1680,1050",
-        ],
-      }
-    )
-    Capybara::Selenium::Driver.new(app, browser: :remote, url: url, desired_capabilities: caps)
-end
 # Checks for pending migrations and applies them before tests are run.
 # If you are not using ActiveRecord, you can remove these lines.
 begin
@@ -47,24 +35,43 @@ RSpec.configure do |config|
   config.before(:each, type: :system) do
     driven_by :rack_test
   end
+  Capybara.javascript_driver = :selenium
 
-  config.before(:each, type: :system, js: true) do
-    driven_by :remote_chrome
-    Capybara.server_host = IPSocket.getaddress(Socket.gethostname)
-    Capybara.server_port = 3000
-    Capybara.app_host = "http://#{Capybara.server_host}:#{Capybara.server_port}"
+  config.before(:each, type: :system, selenium: true) do
+    driven_by :selenium_chrome
   end
+
+  Capybara.register_driver :selenium_chrome do |app|
+    browser_options = ::Selenium::WebDriver::Chrome::Options.new()
+    browser_options.args << '--headless'
+    browser_options.args << '--no-sandbox'
+    browser_options.args << '--disable-gpu'
+    Capybara::Selenium::Driver.new(app, browser: :chrome, options: browser_options)
+  end
+
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  config.use_transactional_fixtures = false
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
+  require 'database_cleaner'
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
+  end
 
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
   # RSpec Rails can automatically mix in different behaviours to your tests
   # based on their file location, for example enabling you to call `get` and
   # `post` in specs under `spec/controllers`.
