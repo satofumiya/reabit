@@ -3,7 +3,7 @@
     <div class="d-flex flex-column justify-content-center mt-3 ms-sm-5 col-md-8 col-12">
       <h1>自分の読書状況を整理しましょう</h1>
       <div>
-        <input v-model="title" placeholder="title" class="col-6 border rounded me-1">
+        <input v-model="title" placeholder="title" class="col-6 border rounded me-1" name="booktitle">
         <button @click="addBook" class="btn btn-outline-primary">読みたい本を追加する</button>
       </div>
     </div>

@@ -31,9 +31,9 @@
                 <% end %>
                 <% if user_signed_in? %>
                   <li class="nav-item mx-1">
-                    <%= link_to "BookList", booklists_path , class:'btn btn-outline-primary' %>
+                    <%= link_to "本棚", booklists_path , class:'btn btn-outline-primary' %>
                   </li>
-                   <li class="nav-item mx-1">
+                  <li class="nav-item mx-1">
                     <%= link_to "ユーザーページ", page_path(current_user), class:'btn btn-outline-primary' %>
                   </li>
                   <li class="nav-item mx-1">
@@ -54,9 +54,11 @@
                 <% end %>
                 <% if user_signed_in? %>
                   <li class="nav-item mx-1 col-12">
-                    <%= link_to "BookList", booklists_path , class:'link' %>
+                    <%= link_to "本棚", booklists_path , class:'link' %>
                   </li>
-
+                  <li class="nav-item mx-1 col-12">
+                    <%= link_to "ユーザーページ", page_path(current_user), class:'btn btn-outline-primary' %>
+                  </li>
                   <li class="nav-item mx-1 col-12">
                     <%= link_to "ログアウト", destroy_user_session_path, method: :delete, data: { confirm: '本当にログアウトしますか？' }, remote: true, class:'link' %>
                   </li>
